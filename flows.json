@@ -1,1 +1,467 @@
-[]
+[
+    {
+        "id": "8335a96e6f869b2c",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "16999250aecb75fa",
+        "type": "telegram bot",
+        "botname": "questionTestAi_bot",
+        "usernames": "",
+        "chatids": "",
+        "baseapiurl": "",
+        "testenvironment": false,
+        "updatemode": "polling",
+        "addressfamily": "",
+        "pollinterval": "300",
+        "usesocks": false,
+        "sockshost": "",
+        "socksprotocol": "socks5",
+        "socksport": "6667",
+        "socksusername": "anonymous",
+        "sockspassword": "",
+        "bothost": "",
+        "botpath": "",
+        "localbotport": "8443",
+        "publicbotport": "8443",
+        "privatekey": "",
+        "certificate": "",
+        "useselfsignedcertificate": false,
+        "sslterminated": false,
+        "verboselogging": false
+    },
+    {
+        "id": "90d5952688b467b0",
+        "type": "telegram receiver",
+        "z": "8335a96e6f869b2c",
+        "name": "",
+        "bot": "16999250aecb75fa",
+        "saveDataDir": "",
+        "filterCommands": false,
+        "x": 100,
+        "y": 360,
+        "wires": [
+            [
+                "cff1f791e023760e"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "cff1f791e023760e",
+        "type": "function",
+        "z": "8335a96e6f869b2c",
+        "name": "function 1",
+        "func": "\nif (msg.payload.content === '/start') {\n    return [msg, null,null];\n}\nif(msg.payload.type==='message'){\n\nreturn [null, msg,null];\n\n}else {\n    return [null, null,msg];\n   \n}\n",
+        "outputs": 3,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 280,
+        "y": 360,
+        "wires": [
+            [
+                "7d18cab107789929"
+            ],
+            [
+                "48c55c702b7276df",
+                "f8c78896c0cecbd9",
+                "f20c5b17b64f8a8c"
+            ],
+            [
+                "94d403db5c701a03"
+            ]
+        ]
+    },
+    {
+        "id": "92ca04ce2f28c76c",
+        "type": "telegram sender",
+        "z": "8335a96e6f869b2c",
+        "name": "",
+        "bot": "16999250aecb75fa",
+        "haserroroutput": false,
+        "outputs": 1,
+        "x": 1020,
+        "y": 300,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "e96d186deaf9f86e",
+        "type": "http request",
+        "z": "8335a96e6f869b2c",
+        "name": "",
+        "method": "use",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 690,
+        "y": 300,
+        "wires": [
+            [
+                "1985a66973a6b290"
+            ]
+        ]
+    },
+    {
+        "id": "1985a66973a6b290",
+        "type": "function",
+        "z": "8335a96e6f869b2c",
+        "name": "function 2",
+        "func": "// if(msg.statusCode==200){\n//     msg.answer = msg.payload.choices[0].message.content\n//     msg.payload = {\n//         content: msg.answer,\n//         type: \"message\",\n//         chatId: msg.fromApp.chatId,\n//     }\n// return [msg,null];\n// }\n// else{\n//     msg.payload = {\n//         content:JSON.stringify(msg.payload),      \n//         type: \"message\",\n//         chatId: msg.fromApp.chatId,\n//     }\n   \n//     return[null,msg]\n// }\n\nif(msg.statusCode==200){\n      msg.answer = msg.payload.choices[0].message.content\n    msg.payload.type='message',\n        msg.payload = {\n        content: msg.answer,\n        type: \"message\",\n        chatId: msg.old.chatId,\n    }\n}\nelse{\n    msg.payload = {\n        content:JSON.stringify(msg.payload),      \n        type: \"message\",\n        chatId: msg.old.chatId,\n    }\n   \n}\nreturn msg\n\n// if (msg.statusCode == 200) {\n//     msg.payload.type = 'message',\n//         msg.payload.content = `<a href=\"${msg.payload.data[0].url}\">image</a>`\n\n//     msg.payload.chatId = `${msg.old.chatId}`\n//     msg.payload.options = { parse_mode: \"HTML\" }\n// }\n// else {\n//     msg.payload.type = 'message',\n//         msg.payload.content = `${msg.payload.error.message}`\n//     msg.payload.chatId = `${msg.old.chatId}`\n\n// }\n// return msg\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 860,
+        "y": 300,
+        "wires": [
+            [
+                "92ca04ce2f28c76c"
+            ]
+        ]
+    },
+    {
+        "id": "ea1b060a932af478",
+        "type": "telegram sender",
+        "z": "8335a96e6f869b2c",
+        "name": "",
+        "bot": "16999250aecb75fa",
+        "haserroroutput": false,
+        "outputs": 1,
+        "x": 540,
+        "y": 80,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "7d18cab107789929",
+        "type": "function",
+        "z": "8335a96e6f869b2c",
+        "name": "greating",
+        "func": "msg.old=msg.payload\nmsg.payload={\n    \"type\":\"message\",\n    \"content\":\" Я - бот, давньогрецький Філософ Сократ, а картини малюватиме у Українському стилі.\",\n    chatId: msg.old.chatId\n}\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 340,
+        "y": 180,
+        "wires": [
+            [
+                "ea1b060a932af478"
+            ]
+        ]
+    },
+    {
+        "id": "94d403db5c701a03",
+        "type": "function",
+        "z": "8335a96e6f869b2c",
+        "name": "error",
+        "func": "\nreturn msg;msg.old=msg.payload\nmsg.payload={\n    \"type\":\"message\",\n    \"content\":\"You can use just text messages\",\n    chatId: msg.old.chatId\n}\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 390,
+        "y": 600,
+        "wires": [
+            [
+                "eaa11040488bfd41"
+            ]
+        ]
+    },
+    {
+        "id": "eaa11040488bfd41",
+        "type": "telegram sender",
+        "z": "8335a96e6f869b2c",
+        "name": "",
+        "bot": "16999250aecb75fa",
+        "haserroroutput": false,
+        "outputs": 1,
+        "x": 580,
+        "y": 600,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "f20c5b17b64f8a8c",
+        "type": "function",
+        "z": "8335a96e6f869b2c",
+        "name": "image req",
+        "func": "msg.old=msg.payload\nmsg.url = `https://api.openai.com/v1/images/generations`\nmsg.headers = {\n        'Content-Type': 'application/json',\n        'Authorization': `Bearer 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`,\n    };\n\n\nmsg.payload={\n    \"prompt\": `${msg.old.content} в українському стилі`,\n    \"n\":1,\n    \"size\": \"512x512\"\n}\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 480,
+        "y": 220,
+        "wires": [
+            [
+                "dc051497afb9eae3"
+            ]
+        ]
+    },
+    {
+        "id": "dc051497afb9eae3",
+        "type": "http request",
+        "z": "8335a96e6f869b2c",
+        "name": "",
+        "method": "POST",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 650,
+        "y": 220,
+        "wires": [
+            [
+                "e40309dbce6a4b45"
+            ]
+        ]
+    },
+    {
+        "id": "e03d0f12b2bd8be7",
+        "type": "telegram sender",
+        "z": "8335a96e6f869b2c",
+        "name": "",
+        "bot": "16999250aecb75fa",
+        "haserroroutput": false,
+        "outputs": 1,
+        "x": 1000,
+        "y": 220,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "e40309dbce6a4b45",
+        "type": "function",
+        "z": "8335a96e6f869b2c",
+        "name": "function 6",
+        "func": "if(msg.statusCode==200){\n    msg.payload.type='message',\n        msg.payload.content = `<a href=\"${msg.payload.data[0].url}\">image</a>`\n\n    msg.payload .chatId=`${msg.old.chatId}`\n    msg.payload.options={parse_mode:\"HTML\"}\n}\nelse{\n    msg.payload.type='message',\n    msg.payload.content=`${msg.payload.error.message}`\n     msg.payload .chatId=`${msg.old.chatId}`\n   \n}\nreturn msg\n\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 820,
+        "y": 220,
+        "wires": [
+            [
+                "e03d0f12b2bd8be7"
+            ]
+        ]
+    },
+    {
+        "id": "f8c78896c0cecbd9",
+        "type": "function",
+        "z": "8335a96e6f869b2c",
+        "name": "answer req",
+        "func": "msg.old=msg.payload\nmsg.method = \"POST\"\nmsg.url = 'https://api.openai.com/v1/chat/completions';\n\n    msg.headers = {\n        'Content-Type': 'application/json',\n        'Authorization': `Bearer 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`,\n    };\n    msg.payload = {\n        \"model\": \"gpt-3.5-turbo-16k\",\n        \"temperature\": 0.2,\n        \"messages\": [\n            {\n                \"role\": \"system\",\n                \"content\": `Ти давньогрецький філософ Сократ, який ділиться своєю мудрістю з наступними поколіннями. Будь ласка формулюй відповіді, так як б їх сформулював Сократ.`\n            },\n            {\n                \"role\": \"user\",\n                \"type\":\"message\",\n                \"content\": msg.old.content\n            }\n        ]\n    };\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 490,
+        "y": 300,
+        "wires": [
+            [
+                "e96d186deaf9f86e"
+            ]
+        ]
+    },
+    {
+        "id": "48c55c702b7276df",
+        "type": "function",
+        "z": "8335a96e6f869b2c",
+        "name": "function 7",
+        "func": "msg.old=msg.payload\nmsg.method = \"POST\"\nmsg.url = 'https://api.openai.com/v1/chat/completions';\n\n    msg.headers = {\n        'Content-Type': 'application/json',\n        'Authorization': `Bearer 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`,\n    };\n    msg.payload = {\n        \"model\": \"gpt-3.5-turbo-16k\",\n        \"temperature\": 0.5,\n        \"messages\": [\n            {\n                \"role\": \"system\",\n                \"content\": `Ти давньогрецький філософ Сократ, який ділиться своєю мудрістю з наступними поколіннями. Будь ласка формулюй відповіді, так як б їх сформулював Сократ.`\n            },\n            {\n                \"role\": \"user\",\n                \"type\":\"message\",\n                \"content\": msg.old.content\n            }\n        ]\n    };\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 500,
+        "y": 400,
+        "wires": [
+            [
+                "c3c101104ab13b60"
+            ]
+        ]
+    },
+    {
+        "id": "c3c101104ab13b60",
+        "type": "http request",
+        "z": "8335a96e6f869b2c",
+        "name": "",
+        "method": "use",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 590,
+        "y": 480,
+        "wires": [
+            [
+                "64b81b97cbcd558b"
+            ]
+        ]
+    },
+    {
+        "id": "64b81b97cbcd558b",
+        "type": "function",
+        "z": "8335a96e6f869b2c",
+        "name": "function 8",
+        "func": "//  msg.answer = msg.payload.choices[0].message.content\n\nmsg.url =`https://api.elevenlabs.io/v1/text-to-speech/JBFqnCBsd6RMkjVDRZzb`\n\nmsg.headers={\n    'accept':\"audio/mpeg\",\n    'xi-api-key':'sk_7a89f2054abc5d15aa6b6951447239085601bf8d57402489',\n    'Content-Type': 'application/json',\n}\nmsg.payload={\n    'text': msg.payload.choices[0].message.content,\n    'model_id':\"eleven_multilingual_v1\",\n    'voice_settings':{\n        \"stability\":0.5,\n        \"similarity_boost\":0.5\n    }\n}\n\nreturn msg\n\n// sk_7a89f2054abc5d15aa6b6951447239085601bf8d57402489\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 720,
+        "y": 400,
+        "wires": [
+            [
+                "50e1e7ace7abb6b6"
+            ]
+        ]
+    },
+    {
+        "id": "50e1e7ace7abb6b6",
+        "type": "http request",
+        "z": "8335a96e6f869b2c",
+        "name": "",
+        "method": "POST",
+        "ret": "bin",
+        "paytoqs": "ignore",
+        "url": "",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 790,
+        "y": 480,
+        "wires": [
+            [
+                "c230befa7146d319"
+            ]
+        ]
+    },
+    {
+        "id": "c230befa7146d319",
+        "type": "function",
+        "z": "8335a96e6f869b2c",
+        "name": "function 9",
+        "func": "\nmsg.headers={\n    'content-type': 'audio/mpeg3;audio/x-mpeg-3;video/mpeg;video/x-mpeg;text/xml',\n    'content-disposition':\"attachment; filename=file.mp3\"\n}\nmsg.payload=msg.payload\n\nreturn msg\n\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 920,
+        "y": 400,
+        "wires": [
+            [
+                "dccc1134370446ba"
+            ]
+        ]
+    },
+    {
+        "id": "e331a586b46b7242",
+        "type": "telegram sender",
+        "z": "8335a96e6f869b2c",
+        "name": "",
+        "bot": "16999250aecb75fa",
+        "haserroroutput": false,
+        "outputs": 1,
+        "x": 1320,
+        "y": 400,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "ea327bfc374ec9dd",
+        "type": "function",
+        "z": "8335a96e6f869b2c",
+        "name": "function 10",
+        "func": "\nmsg.payload={\n    content:msg.filename,\n    type:\"voice\",\n    chatId:msg.old.chatId\n\n}\n\nreturn msg\n\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1150,
+        "y": 400,
+        "wires": [
+            [
+                "e331a586b46b7242"
+            ]
+        ]
+    },
+    {
+        "id": "dccc1134370446ba",
+        "type": "file",
+        "z": "8335a96e6f869b2c",
+        "name": "",
+        "filename": "/data/audio.mp3",
+        "filenameType": "str",
+        "appendNewline": false,
+        "createDir": false,
+        "overwriteFile": "true",
+        "encoding": "none",
+        "x": 1070,
+        "y": 500,
+        "wires": [
+            [
+                "ea327bfc374ec9dd"
+            ]
+        ]
+    }
+]
